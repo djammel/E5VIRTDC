@@ -224,7 +224,7 @@ Documentation et résultats : Explication des choix et analyse des performances
 
 
 . Deploiment minikube commande
-![alt text](minkube.png)
+![alt text](minikube.png)
 
 . Deploiment docker et application 
 ![alt text](docker.png)
