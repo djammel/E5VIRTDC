@@ -1,9 +1,8 @@
-# E5VIRTDC
+ # E5VIRTDC
 Djamel MOAD Rendue 
 
 # E5-CCISP
 Djamel MOAD Rendue 
-
 
 
 
@@ -235,42 +234,31 @@ Documentation et résultats : Explication des choix et analyse des performances
 
 
 . Deploiment minikube commande
-![alt text](screen/minkube.png)
+![alt text](minkube.png)
 
 . Deploiment docker et application 
-![alt text](screen/docker.png)
+![alt text](docker.png)
 . Redirection de port 
-![alt text](screen/ports.png)
+![alt text](ports.png)
 
 . Page d'acceuil application 
-![alt text](screen/acceuil.png)
+![alt text](acceuil.png)
 . Pade presentation produits
-![alt text](screen/presentation.png)
+![alt text](presentation.png)
 . Page de paiement 
-![alt text](screen/paiement.png)
+![alt text](paiement.png)
 . Transation sur stripe 
 ![alt text](stripe.png)
 . Test de paiement : Validation du bon fonctionnement des transactions Stripe
-![alt text](screen/stripeok.png)
+![alt text](stripeok.png)
 
 ## Choix des frameworks
 
 
+Django & Flask : Frameworks légers et efficaces pour le développement web
 
-Léger et facile à utiliser.
-Fournit une interface utilisateur moderne et personnalisable.
+Stripe : Simplifie l'intégration des paiements
 
-Ecommerce Flask Django 
+Rocket Django : Solution robuste et bien structurée pour des projets évolutifs
 
-Simplifie l'intégration des paiements avec Stripe.
-Idéal pour les projets de commerce électronique.
 
-Rocket Django
-
-Robuste et bien structuré pour des projets évolutifs.
-Offre des fonctionnalités prédéfinies pour un développement rapide.
-Ces frameworks sont légers, simples à prendre en main et proposent des exemples pratiques pour accélérer le développement tout en assurant une qualité professionnelle.
-
-## Diagramme Projet
-
-![alt text](screen/Schemaprojet.png)
