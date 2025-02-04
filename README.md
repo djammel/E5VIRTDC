@@ -249,7 +249,7 @@ Documentation et résultats : Explication des choix et analyse des performances
 . Page de paiement 
 ![alt text](screen/paiement.png)
 . Transation sur stripe 
-![alt text](screen/stripe.png)
+![alt text](stripe.png)
 . Test de paiement : Validation du bon fonctionnement des transactions Stripe
 ![alt text](screen/stripeok.png)
 
