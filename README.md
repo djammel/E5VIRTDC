@@ -47,19 +47,31 @@ HPA (Horizontal Pod Autoscaler) : Scalabilité automatique selon la charge
 Volumes persistants : Stockage des données sensibles de l'application
 
 ```bash
-< PROJECT ROOT >
+<< HOME [SSH: 192...] >
    |
-   |-- apps/
-   |    |-- django-soft-ui-dashboard/
-   |    |-- flask-soft-ui-design/
-   |    |-- ecommerce-flask-stripe/
-   |    |-- rocket-django/
-   |
-   |-- nginx/
-   |    |-- nginx.conf
-   |
-   |-- docker-compose.yml
-   ************************************************************************
+   |-- djam/
+   |    |-- .cache/
+   |    |    |-- Microsoft/
+   |    |         |-- motd.legal-displayed
+   |    |
+   |    |-- .docker/
+   |    |-- .kube/
+   |    |    |-- cache/
+   |    |    |-- config
+   |    |
+   |    |-- .minikube/
+   |    |-- .ssh/
+   |    |-- .vscode-server/
+   |    |-- priv-rocket-ecommerce-main/
+   |    |
+   |    |-- .bash_history
+   |    |-- .bash_logout
+   |    |-- .bashrc
+   |    |-- .profile
+   |    |-- .sudo_as_admin_successful
+   |    |-- .wget-hsts
+   |    |
+   |    |-- manifestr.yaml
 ```
 
 
@@ -68,68 +80,134 @@ Volumes persistants : Stockage des données sensibles de l'application
 <!-- FILES CONFIGURATIONS -->
 ## Configurations
 
-. Contenu du compose.yaml
+. Contenu du manifest.yaml
 
-``` bash
-version: '3.7'
-
-services:
-  django-soft-ui:
-    # build: ./django-soft-ui-dashboard
-    image: th0m8s/django-soft-ui-dashboard:prod
-    ports:
-"5080:5005"
-networks:
-app_network
-
-  flask-soft-ui:
-    # build: ./apps/flask-soft-ui-design
-    image: th0m8s/flask-soft-ui-dashboard:prod
-    ports: 
-      
-"5083:5008"
-  networks:
-app_network
-
-  flask-material-dashboard:
-    # build: ./apps/ecommerce-flask-stripe
-    image: th0m8s/flask-material-dashboard:prod
-    ports:
-      
-"5082:5007"
-  networks:
-app_network
-
-  flask-atlantis-dark:
-    # build: ./apps/rocket-django
-    image: th0m8s/flask-atlantis-dark:prod
-    ports:
-"5081:5006"
-networks:
-app_network
-
-  nginx:
-    image: "nginx:mainline-alpine3.20-slim"
-    ports:
-"5080:5005"
-"5081:5006"
-"5082:5007"
-"5083:5008"
-volumes:
-./nginx:/etc/nginx/conf.d
-networks:
-web_network
-depends_on:
-django-soft-ui
-flask-soft-ui
-flask-material-dashboard
-flask-atlantis-dark
-
-networks:
-  app_network:
-    driver: bridge
-  web_network:
-    driver: bridge
+``` apiVersion: v1
+kind: Namespace
+metadata:
+  name: rocket-eval
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rocket-configmap
+  namespace: rocket-eval
+data:
+  DEMO_MODE: "True"
+  DEBUG: "True"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: stripe-secret
+  namespace: rocket-eval
+type: Opaque
+# Pour mettre les secrets en claires, il faut utiliser "stringData:", sinon, il va falloir les hasher en base64
+stringData:
+#data:
+  STRIPE_PUBLISHABLE_KEY: pk_test_51QoNZERYe4rmbEUk1Jm8WCMrulfLLLjOCxg1l1fm54NUmXnm6W5pF3CxIGHVDoWb6isC9grZ7RkUFWSrsZ0WUFl500sXiUqbVg
+  STRIPE_SECRET_KEY: sk_test_51QoNZERYe4rmbEUkWFws4qlaYLrdik4bDQRlGwMJk7mhPRdhD2Z5dPCSSWXa2riKlKUnGH3HdIu0lG50i9JcLlCi00VyKsxHqA
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rocket-deployment
+  namespace: rocket-eval
+  # Labels du deployment
+  labels:
+    app: django
+    env: preprod
+    tier: frontend
+spec:
+  selector:
+    matchLabels:
+      app: django
+  replicas: 1
+  template:
+    metadata:
+      # Labels des pods
+      labels:
+        app: django
+        env: preprod
+        tier: frontend
+    spec:
+      containers:
+      - name: rocket-random
+        image: approcket:latest
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            memory: 64Mi
+            cpu: 250m
+          limits:
+            memory: 128Mi
+            cpu: 400m
+        envFrom:
+        - configMapRef:
+            # nom de la configMap
+            name: rocket-configmap
+        env:
+          # nom de la variable qui sera injectée
+          - name: STRIPE_PUBLISHABLE_KEY
+            valueFrom:
+              secretKeyRef:
+                # nom de l'objet secret
+                name: stripe-secret
+                # nom du secret précis
+                key: STRIPE_PUBLISHABLE_KEY
+          - name: STRIPE_SECRET_KEY
+            valueFrom:
+              secretKeyRef:
+                name: stripe-secret
+                key: STRIPE_SECRET_KEY
+---
+apiVersion: v1
+kind: Service
+metadata:
+  # name: django-new-service
+  name: rocket-service
+  namespace: rocket-eval
+spec:
+  type: LoadBalancer
+  selector:
+    app: django
+  ports:
+  - port: 5005
+    targetPort: 5005
+    # nodePort: 30001
+    name: django-np
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-rocketapp
+  namespace: rocket-eval
+spec:
+  defaultBackend:
+    service:
+      name: rocket-service
+      port:
+        number: 7777
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: rocket-hpa
+  namespace: rocket-eval
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: rocket-deployment
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 50
 
 ```
 
@@ -155,34 +233,34 @@ Documentation et résultats : Explication des choix et analyse des performances
 <!-- INTERFACES -->
 ## Quelques interfaces
 
-Test de résilience : Détection des points de défaillance
 
-Analyse des logs : Identification des anomalies et optimisation
+. Deploiment minikube commande
+![alt text](screen/minkube.png)
 
+. Deploiment docker et application 
+![alt text](screen/docker.png)
+. Redirection de port 
+![alt text](screen/ports.png)
 
-
+. Page d'acceuil application 
+![alt text](screen/acceuil.png)
+. Pade presentation produits
+![alt text](screen/presentation.png)
+. Page de paiement 
+![alt text](screen/paiement.png)
+. Transation sur stripe 
+![alt text](screen/stripe.png)
 . Test de paiement : Validation du bon fonctionnement des transactions Stripe
-
-![alt text](screen/Dashboard.png)
-
-. Soft UI Dashboard
-
-![alt text](screen/SoftDashborad.png)
-
-. Flask Materiaal Dashboard
-
-![alt text](screen/flask.png)
-
+![alt text](screen/stripeok.png)
 
 ## Choix des frameworks
 
 
-Flask Soft UI Design
 
 Léger et facile à utiliser.
 Fournit une interface utilisateur moderne et personnalisable.
 
-Ecommerce Flask Stripe
+Ecommerce Flask Django 
 
 Simplifie l'intégration des paiements avec Stripe.
 Idéal pour les projets de commerce électronique.
@@ -195,4 +273,4 @@ Ces frameworks sont légers, simples à prendre en main et proposent des exemple
 
 ## Diagramme Projet
 
-![alt text](screen/Schema3.png)
+![alt text](screen/Schemaprojet.png)
