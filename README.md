@@ -35,9 +35,7 @@ HPA (Horizontal Pod Autoscaler) : Scalabilité automatique selon la charge
 Volumes persistants : Stockage des données sensibles de l'application
 
 ```bash
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-<< HOME [SSH: 192...] >
-   |
+< PROJECT ROOT >
    |-- djam/
    |    |-- .cache/
    |    |    |-- Microsoft/
@@ -61,7 +59,7 @@ Volumes persistants : Stockage des données sensibles de l'application
    |    |-- .wget-hsts
    |    |
    |    |-- manifestr.yaml
-
+   ************************************************************************
 ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -205,20 +203,27 @@ spec:
 
 ### Pour déployer les applications du répertoire "devoir":
 
+``` bash
 Définition de l'architecture : Identification des composants et interactions
-
+```
+``` bash
 Configuration de Kubernetes : Mise en place des namespaces, deployments, services
-
+```
+``` bash
 Intégration de Stripe : Configuration de l'API avec secrets et configMaps
-
+```
+``` bash
 Gestion du scaling : Implémentation du HPA pour ajuster dynamiquement le nombre de pods
-
+```
+``` bash
 Tests de charge : Simulation de trafic et mesure des performances
-
+```
+``` bash
 Monitoring et Logging : Configuration de Prometheus et Grafana pour observer l'utilisation des ressources
-
+```
+``` bash
 Documentation et résultats : Explication des choix et analyse des performances
-
+```
 <!-- INTERFACES -->
 ## Quelques interfaces
 
