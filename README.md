@@ -22,17 +22,36 @@ Djamel MOAD Rendue
 Voici la structure du projet:
 
 Composants Utilisés
-
+``` bash
 Kubernetes
+```
+``` bash
 Pods : Conteneurisation des applications
+```
+``` bash
 Deployments : Gestion des versions et des mises à jour
+```
+``` bash
 Services : Exposition des applications sur le réseau
+```
+``` bash
 Ingress : Gestion du trafic sur les ports 80 et 443
+```
+``` bash
 ConfigMaps : Stockage des fichiers d'environnement non sensibles
+```
+``` bash
 Secrets : Stockage des informations sensibles (ex : clés API Stripe)
+```
+``` bash
 Namespaces : Isolation des environnements (Dev et Prod)
+```
+``` bash
 HPA (Horizontal Pod Autoscaler) : Scalabilité automatique selon la charge
+```
+``` bash
 Volumes persistants : Stockage des données sensibles de l'application
+```
 
 ```bash
 < PROJECT ROOT >
