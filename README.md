@@ -243,6 +243,23 @@ Monitoring et Logging : Configuration de Prometheus et Grafana pour observer l'u
 ``` bash
 Documentation et résultats : Explication des choix et analyse des performances
 ```
+
+<!-- GETTING STARTED -->
+## Etape du build
+
+### Pour déployer les applications du répertoire "devoir":
+
+1- Exécuter la commande suivante pour mettre en place vos application avec le manifest:
+
+``` bash
+k create -f "nom du fichier.yaml" 
+```
+
+2- Et vous pouvez voir vos application déployer en faisant:
+
+``` bash
+k get all
+```
 <!-- INTERFACES -->
 ## Quelques interfaces
 
