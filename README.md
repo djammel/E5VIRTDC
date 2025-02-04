@@ -7,14 +7,12 @@ Djamel MOAD Rendue
 
 
 <!-- PROJECT LOGO --> <br /> <div align="center"> <h3 align="center">Projet Kubernetes : Applications e-commerce </h3> <p align="center"> 
-
 <a href="https://github.com/app-generator/ecommerce-django-stripe"><strong>Documentation E-commerce django stripe</strong></a> <br /> 
 <a href="https://docs.stripe.com/checkout/quickstart">Documentation Stripe premier pas</a> · 
 <a href="https://github.com/app-generator/ecommerce-flask-stripe">Documentation Ecommerce Flask Stripe</a> · 
 
 
-<!-- TABLE OF CONTENTS --> <details> <summary>Table des matières</summary> <ol> <li><a href="#structure-du-projet">Structure du projet</a></li> <li><a href="#configurations">Configurations</a></li> 
-<li><a href="#etape-du-build">Étape du build</a></li> <li><a href="#logs">Logs</a></li> <li><a href="#quelques-interfaces">Quelques Interfaces</a></li> </ol> </details>
+<!-- TABLE OF CONTENTS --> <details> <summary>Table des matières</summary> <ol> <li><a href="#structure-du-projet">Structure du projet</a></li> <li><a href="#configurations">Configurations</a></li><li><a href="#etape-du-build">Étape du build</a></li> <li><a href="#logs">Logs</a></li> <li><a href="#quelques-interfaces">Quelques Interfaces</a></li> </ol> </details>
 
 
 
@@ -26,26 +24,18 @@ Voici la structure du projet:
 Composants Utilisés
 
 Kubernetes
-
 Pods : Conteneurisation des applications
-
 Deployments : Gestion des versions et des mises à jour
-
 Services : Exposition des applications sur le réseau
-
 Ingress : Gestion du trafic sur les ports 80 et 443
-
 ConfigMaps : Stockage des fichiers d'environnement non sensibles
-
 Secrets : Stockage des informations sensibles (ex : clés API Stripe)
-
 Namespaces : Isolation des environnements (Dev et Prod)
-
 HPA (Horizontal Pod Autoscaler) : Scalabilité automatique selon la charge
-
 Volumes persistants : Stockage des données sensibles de l'application
 
 ```bash
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 << HOME [SSH: 192...] >
    |
    |-- djam/
@@ -71,8 +61,8 @@ Volumes persistants : Stockage des données sensibles de l'application
    |    |-- .wget-hsts
    |    |
    |    |-- manifestr.yaml
-```
 
+```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -249,8 +239,7 @@ Documentation et résultats : Explication des choix et analyse des performances
 ![alt text](paiement.png)
 . Transation sur stripe 
 ![alt text](stripe.png)
-. Test de paiement : Validation du bon fonctionnement des transactions Stripe
-![alt text](stripeok.png)
+
 
 ## Choix des frameworks
 
